@@ -194,10 +194,6 @@ def prepare_data(df):
 # In[12]:
 
 
-df = pd.read_csv('dataset.csv')
-X, y = prepare_data(df)
-
-
 # #### Reading the Data
 # ###### This section reads data from a CSV file named dataset.csv into a Pandas DataFrame (df). The DataFrame will be used for data processing and model training.
 
