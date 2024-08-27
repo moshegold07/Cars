@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Prediction</title>
+    <link href="https://www.ad.co.il/car" rel="stylesheet">
+    <style>
+      label {
+        display: block;
+      }
+      body {
+        font-family: 'Heebo Light', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .login {
+        max-width: 600px;
+        width: 100%;
+      }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>Car Price Prediction</h1>
+        <h2>Enter the car data:</h2>
+        <form id="car-data-form" action="{{ url_for('predict') }}" method="post">
+            <label for="manufactor">Manufactor:</label>
+            <input type="text" id="manufactor" name="manufactor" value="{{ request.form.get('manufactor') }}" required><br><br>
+
+            <label for="Year">Year:</label>
+            <input type="number" id="Year" name="Year" min="1950" max="2024" value="{{ request.form.get('Year') }}" required><br><br>
+
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="model" value="{{ request.form.get('model') }}" required><br><br>
+
+            <label for="Hand">Hand:</label>
+            <input type="number" id="Hand" name="Hand" min="1" value="{{ request.form.get('Hand') }}" required><br><br>
+
+            <label for="Gear">Gear:</label>
+            <select id="Gear" name="Gear" required>
+                <option value="אוטומטית" {% if request.form.get('Gear') == 'אוטומטית' %}selected{% endif %}>אוטומטית</option>
+                <option value="ידנית" {% if request.form.get('Gear') == 'ידנית' %}selected{% endif %}>ידנית</option>
+                <option value="טיפטרוניק" {% if request.form.get('Gear') == 'טיפטרוניק' %}selected{% endif %}>טיפטרוניק</option>
+                <option value="רובוטית" {% if request.form.get('Gear') == 'רובוטית' %}selected{% endif %}>רובוטית</option>
+            </select><br><br>
+
+            <label for="capacity_Engine">Engine Capacity:</label>
+            <input type="number" id="capacity_Engine" name="capacity_Engine" min="800" value="{{ request.form.get('capacity_Engine') }}" required><br><br>
+
+            <label for="Engine_type">Engine Type:</label>
+            <select id="Engine_type" name="Engine_type" required>
+                <option value="בנזין" {% if request.form.get('Engine_type') == 'בנזין' %}selected{% endif %}>בנזין</option>
+                <option value="דיזל" {% if request.form.get('Engine_type') == 'דיזל' %}selected{% endif %}>דיזל</option>
+                <option value="גז" {% if request.form.get('Engine_type') == 'גז' %}selected{% endif %}>גז</option>
+                <option value="היבריד" {% if request.form.get('Engine_type') == 'היבריד' %}selected{% endif %}>היבריד</option>
+                <option value="חשמלי" {% if request.form.get('Engine_type') == 'חשמלי' %}selected{% endif %}>חשמלי</option>
+            </select><br><br>
+
+            <label for="Prev_ownership">Previous Ownership:</label>
+            <select id="Prev_ownership" name="Prev_ownership" required>
+                <option value="פרטית" {% if request.form.get('Prev_ownership') == 'פרטית' %}selected{% endif %}>פרטית</option>
+                <option value="חברה" {% if request.form.get('Prev_ownership') == 'חברה' %}selected{% endif %}>חברה</option>
+                <option value="השכרה" {% if request.form.get('Prev_ownership') == 'השכרה' %}selected{% endif %}>השכרה</option>
+                <option value="ליסינג" {% if request.form.get('Prev_ownership') == 'ליסינג' %}selected{% endif %}>ליסינג</option>
+                <option value="מונית" {% if request.form.get('Prev_ownership') == 'מונית' %}selected{% endif %}>מונית</option>
+                <option value="לימוד נהיגה" {% if request.form.get('Prev_ownership') == 'לימוד נהיגה' %}selected{% endif %}>לימוד נהיגה</option>
+                <option value="ייבוא אישי" {% if request.form.get('Prev_ownership') == 'ייבוא אישי' %}selected{% endif %}>ייבוא אישי</option>
+                <option value="ממשלתי" {% if request.form.get('Prev_ownership') == 'ממשלתי' %}selected{% endif %}>ממשלתי</option>
+                <option value="אחר" {% if request.form.get('Prev_ownership') == 'אחר' %}selected{% endif %}>אחר</option>
+            </select><br><br>
+
+            <label for="Curr_ownership">Current Ownership:</label>
+            <select id="Curr_ownership" name="Curr_ownership" required>
+                <option value="פרטית" {% if request.form.get('Curr_ownership') == 'פרטית' %}selected{% endif %}>פרטית</option>
+                <option value="חברה" {% if request.form.get('Curr_ownership') == 'חברה' %}selected{% endif %}>חברה</option>
+                <option value="השכרה" {% if request.form.get('Curr_ownership') == 'השכרה' %}selected{% endif %}>השכרה</option>
+                <option value="ליסינג" {% if request.form.get('Curr_ownership') == 'ליסינג' %}selected{% endif %}>ליסינג</option>
+                <option value="מונית" {% if request.form.get('Curr_ownership') == 'מונית' %}selected{% endif %}>מונית</option>
+                <option value="לימוד נהיגה" {% if request.form.get('Curr_ownership') == 'לימוד נהיגה' %}selected{% endif %}>לימוד נהיגה</option>
+                <option value="ייבוא אישי" {% if request.form.get('Curr_ownership') == 'ייבוא אישי' %}selected{% endif %}>ייבוא אישי</option>
+                <option value="ממשלתי" {% if request.form.get('Curr_ownership') == 'ממשלתי' %}selected{% endif %}>ממשלתי</option>
+                <option value="אחר" {% if request.form.get('Curr_ownership') == 'אחר' %}selected{% endif %}>אחר</option>
+            </select><br><br>
+
+            <label for="Color">Color:</label>
+            <input type="text" id="Color" name="Color" value="{{ request.form.get('Color') }}" required><br><br>
+
+            <label for="Km">Kilometers Driven:</label>
+            <input type="number" id="Km" name="Km" min="0" value="{{ request.form.get('Km') }}" required><br><br>
+
+            <label for="Test">Test:</label>
+            <input type="text" id="Test" name="Test" value="{{ request.form.get('Test') }}" required><br><br>
+
+            <button type="submit" class="btn btn-primary px-5">Calculate Price</button>
+        </form>
+        <!-- Display the prediction result -->
+        {% if prediction_price %}
+            <h3>{{ prediction_price }}</h3>
+        {% endif %}
+    </div>
+</body>
+</html>
